@@ -1,0 +1,26 @@
+.task-editor {
+  margin: 4em 20%;
+}
+
+.task-input {
+  margin-top: 1em;
+}
+.task-button {
+  float: right;
+  margin: 1em;
+}
+
+.task-body {
+  margin: 2em 20%;
+  &:hover {
+    background-color: rgba(212,228,239,1);
+  }
+}
+
+
+
+@media(max-width: 720px) {
+  .task-editor {
+    margin: 4em;
+  }
+}
