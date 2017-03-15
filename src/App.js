@@ -11,6 +11,10 @@ class App extends React.Component {
   constructor() {
     super();
 
+    this.addTask = this.addTask.bind(this);
+    this.getTaskTitle = this.getTaskTitle.bind(this);
+    this.getTaskDescription = this.getTaskDescription.bind(this);
+
     this.state = {
       tasks:[{
               "taskTitle": "A new Task!",
@@ -29,10 +33,42 @@ class App extends React.Component {
               "taskDescription": "wash your damn car",
               "timeElapsed" : 0,
               "completed": false
-            }]
-
+            }],
+      newTaskTitle: "",
+      newTaskDescription: ""
     }
   }
+
+  addTask (event) {
+
+    event.preventDefault();
+
+    const newState = Object.assign({}, this.state);
+
+    console.log(newState);
+    
+    if (this.state.newTaskTitle.length > 0 && this.state.newTaskDescription.length > 0) {
+      newState.tasks.push({"taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false})
+      newState.newTaskDescription = "";
+      newState.newTaskTitle = "";
+
+      this.setState(newState);
+      console.log(this.state);
+    }
+  }
+
+  getTaskTitle (event) {
+    this.setState({
+      newTaskTitle: event.target.value
+    });
+  }
+
+  getTaskDescription (event) {
+    this.setState({
+      newTaskDescription: event.target.value
+    });
+  }
+
   /*
   componentDidMount () {
     if (this.state.finished === false) {
@@ -70,10 +106,14 @@ class App extends React.Component {
           <div className="panel-body">
             <form>
               <div className="form-group">
-                <label htmlFor="task">Please enter a task</label>
-                <textarea className="form-control task-input" rows="3" placeholder="I will complete..."></textarea>
-                <button className="btn btn-success task-button">Go!</button>
+                <label htmlFor="title">Task title</label>
+                <input type="text" className="form-control" maxLength="75" placeholder="Title..." onChange={this.getTaskTitle}></input>
               </div>
+              <div className="form-group">
+                <label htmlFor="task">Please enter a task</label>
+                <textarea className="form-control task-input" rows="3" placeholder="I will complete..." onChange={this.getTaskDescription}></textarea>
+              </div>
+                <button className="btn btn-success task-button" onClick={this.addTask}>Go!</button>
             </form>
           </div>
         </div>

@@ -3,6 +3,12 @@ import React from 'react';
 
 export default class Task extends React.Component {
 
+  startTimer () {
+    this.props.second = 0;
+    this.props.minute = 0;
+    this.props.hour = 0;
+  }
+
   render() {
     return (
       <div className="panel panel-default task-panel">
