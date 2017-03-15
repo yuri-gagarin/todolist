@@ -12,13 +12,28 @@ class App extends React.Component {
     super();
 
     this.state = {
-      "taskTitle": "A new Task!",
-      "taskDescription": "This is a task. It needs to be comleted soon",
-      "timeElapsed" : 0,
-      "finished": false
+      tasks:[{
+              "taskTitle": "A new Task!",
+              "taskDescription": "This is a task. It needs to be comleted soon",
+              "timeElapsed" : 0,
+              "completed": false
+            },
+            {
+              "taskTitle": "Another Task!",
+              "taskDescription": "This yet another task. It needs to be comleted soon",
+              "timeElapsed" : 0,
+              "completed": false
+            },
+            {
+              "taskTitle": "Wash the car",
+              "taskDescription": "wash your damn car",
+              "timeElapsed" : 0,
+              "completed": false
+            }]
+
     }
   }
-
+  /*
   componentDidMount () {
     if (this.state.finished === false) {
       TimerMixin.setInterval(() => {
@@ -33,9 +48,22 @@ class App extends React.Component {
       console.log(this.state.timeElapsed);
     }, 5000)
   }
-
+ */
 
   render() {
+
+    let tasks = this.state.tasks.map((task, key) => {
+      return (
+        <Task
+          key={key}
+          title={task.taskTitle}
+          description={task.taskDescription}
+          time={task.timeElapsed}
+          complete={task.completed}
+        />
+      );
+    });
+
     return (
       <div>
         <div className="panel panel-success task-editor">
@@ -49,11 +77,7 @@ class App extends React.Component {
             </form>
           </div>
         </div>
-        <Task
-          title={this.state.taskTitle}
-          description={this.state.taskDescription}
-          time={this.state.timeElapsed}
-        />
+        {tasks}
       </div>
     );
   }
