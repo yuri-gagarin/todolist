@@ -1,7 +1,9 @@
+.panel-body {
+  background-color: rgba(212,228,239,1);
+}
 .task-editor {
   margin: 4em 20%;
 }
-
 .task-input {
   margin-top: 1em;
 }
@@ -10,17 +12,41 @@
   margin: 1em;
 }
 
-.task-body {
-  margin: 2em 20%;
-  &:hover {
-    background-color: rgba(212,228,239,1);
-  }
+.panel {
+  margin-bottom: 10px;
 }
 
 
 
+.task-body {
+  background: rgba(212,228,239,1) !important;
+  &:hover {
+    background-color: rgba(210,255,82,1) !important;
+  }
+}
+.task-panel {
+  margin: 2em 20%;
+}
+
+.task-title {
+  text-align: left;
+  margin-left: 3%;
+
+}
+.task-description {
+  margin-left: 1em;
+}
+
+.timer {
+  color: rgba(105,105,105,1);
+}
+
+
 @media(max-width: 720px) {
   .task-editor {
+    margin: 4em;
+  }
+  .task-panel {
     margin: 4em;
   }
 }

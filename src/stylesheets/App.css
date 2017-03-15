@@ -1,3 +1,6 @@
+.panel-body {
+  background-color: #d4e4ef; }
+
 .task-editor {
   margin: 4em 20%; }
 
@@ -8,12 +11,30 @@
   float: right;
   margin: 1em; }
 
+.panel {
+  margin-bottom: 10px; }
+
 .task-body {
-  margin: 2em 20%; }
+  background: #d4e4ef !important; }
 
 .task-body:hover {
-  background-color: #d4e4ef; }
+  background-color: #d2ff52 !important; }
+
+.task-panel {
+  margin: 2em 20%; }
+
+.task-title {
+  text-align: left;
+  margin-left: 3%; }
+
+.task-description {
+  margin-left: 1em; }
+
+.timer {
+  color: dimgray; }
 
 @media (max-width: 720px) {
   .task-editor {
+    margin: 4em; }
+  .task-panel {
     margin: 4em; } }
