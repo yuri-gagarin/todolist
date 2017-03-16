@@ -13,10 +13,10 @@ var config = {
   storageBucket: "blocitoff-69708.appspot.com",
   messagingSenderId: "321005892281"
 };
-firebase.initializeApp(config);
+//firebase.initializeApp(config);
 
-const db = firebase.database();
-const dbRef = db.ref().child('data');
+//const db = firebase.database();
+//const dbRef = db.ref().child('data');
 
 
 

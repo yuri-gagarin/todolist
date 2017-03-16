@@ -16,9 +16,8 @@
 
 .task-body {
   background: #d4e4ef !important; }
-
-.task-body:hover {
-  background-color: #d2ff52 !important; }
+  .task-body:hover {
+    background-color: #d2ff52 !important; }
 
 .task-panel {
   margin: 2em 20%; }
@@ -31,7 +30,20 @@
   margin-left: 1em; }
 
 .timer {
-  color: dimgray; }
+  color: dimgray;
+  margin-left: 3%; }
+
+.task-status-buttons {
+  height: 30px;
+  border-top: 1px solid grey; }
+
+.btn-complete {
+  float: left;
+  margin-left: 3%; }
+
+.btn-delete {
+  float: right;
+  margin-right: 3%; }
 
 @media (max-width: 720px) {
   .task-editor {
