@@ -57,10 +57,21 @@ class App extends React.Component {
     });
   }
 
-  _markCompleted (target) {
-    //const currentState = Object.assign({}, this.state)
-    const currentTask = target;
-    console.log(this.state);
+  _markCompleted (targetId) {
+    const currentState = Object.assign({}, this.state)
+    currentState.tasks = currentState.tasks.map(task => {
+      if(task.taskId === targetId)
+      {
+        task.completed = true;
+        return task;
+      }
+      else
+      {
+        return task;
+      }
+    });
+
+    this.setState(currentState);
   }
 
   _addTask (event) {
@@ -89,23 +100,6 @@ class App extends React.Component {
     this.setState(newState);
     console.log(this.state);
   }
-
-  /*
-  componentDidMount () {
-    if (this.state.finished === false) {
-      TimerMixin.setInterval(() => {
-          this.setState({timeElapsed: this.state.timeElapsed + 1});
-          console.log('I do not leak!'); },
-        1000);
-    }
-
-    TimerMixin.setTimeout(() => {
-      this.setState({"finished": true});
-      console.log(this.state.finished);
-      console.log(this.state.timeElapsed);
-    }, 5000)
-  }
- */
 
   render() {
 

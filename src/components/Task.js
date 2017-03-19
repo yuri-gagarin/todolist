@@ -26,7 +26,7 @@ export default class Task extends React.Component {
           <hr/>
           <p className="timer">Time expired since start: {this.props.time}</p>
           <div className="task-status-buttons">
-            <button type="button" className="btn btn-link btn-complete" onClick={this.props.markCompleted.bind(null, this)}>Complete  <span><FaCheckCircle /></span></button>
+            <button type="button" className="btn btn-link btn-complete" onClick={this.props.markCompleted.bind(null, this.props.id)}>Complete  <span><FaCheckCircle /></span></button>
             <button type="button" className="btn btn-link btn-delete" onClick={this.props.deleteTask.bind(null, this.props.id)}>Delete  <span><FaTrash /></span></button>
           </div>
         </div>
