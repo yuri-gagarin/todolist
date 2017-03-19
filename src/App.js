@@ -43,6 +43,26 @@ class App extends React.Component {
     }
   }
 
+
+
+  _getTaskTitle (event) {
+    this.setState({
+      newTaskTitle: event.target.value
+    });
+  }
+
+  _getTaskDescription (event) {
+    this.setState({
+      newTaskDescription: event.target.value
+    });
+  }
+
+  _markCompleted (target) {
+    //const currentState = Object.assign({}, this.state)
+    const currentTask = target;
+    console.log(this.state);
+  }
+
   _addTask (event) {
 
     event.preventDefault();
@@ -59,30 +79,15 @@ class App extends React.Component {
       console.log(this.state.tasks)
     }
   }
+  _deleteTask (targetId) {
 
-  _getTaskTitle (event) {
-    this.setState({
-      newTaskTitle: event.target.value
-    });
-  }
-
-  _getTaskDescription (event) {
-    this.setState({
-      newTaskDescription: event.target.value
-    });
-  }
-
-  _deleteTask (task) {
-    const tasks = this.state.tasks;
-    const currentTask = task;
-
-    tasks.forEach((el) => {
-      if(el == currentTask) {
-        console.log(el);
-        console.log(currentTask);
-      }
-    });
-    console.log(taskId);
+    const newState = Object.assign({}, this.state);
+    const modifiedTasks = newState.tasks.filter((task) => {
+      return(targetId != task.taskId);
+    })
+    newState.tasks = modifiedTasks;
+    this.setState(newState);
+    console.log(this.state);
   }
 
   /*
@@ -108,12 +113,13 @@ class App extends React.Component {
       return (
         <Task
           key={key}
-          taskId={task.taskId}
+          id={task.taskId}
           title={task.taskTitle}
           description={task.taskDescription}
           time={task.timeElapsed}
-          complete={task.completed}
+          completed={task.completed}
           deleteTask={this._deleteTask.bind(this)}
+          markCompleted={this._markCompleted.bind(this)}
         />
       );
     });
