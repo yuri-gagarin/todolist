@@ -47,10 +47,13 @@ class App extends React.Component {
 
   _getAllTasks() {
     const currentState = Object.assign({}, this.state);
-    dbRef.on("child_added", (snapshot) => {
-      tasks.push(snapshot.val());
-      currentState.tasks.push(snapshot.val());
-      console.log(currentState);
+    let currentTasks = {}
+    dbRef.on("value", (snapshot) => {
+      currentTasks = snapshot.val()
+      for (var i in currentTasks) {
+        currentState.tasks.push(currentTasks[i]);
+      }
+      console.log(currentState.tasks);
       this.setState(currentState);
     });
   }
