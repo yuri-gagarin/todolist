@@ -3,6 +3,24 @@ import './stylesheets/App.css';
 import * as firebase from 'firebase';
 import Task from './components/Task';
 import TimerMixin from 'react-timer-mixin';
+global.jQuery = require('jquery');
+import $ from 'jquery';
+
+var config = {
+  apiKey: "AIzaSyBckf_p4eLyfj-NrtGUB_51dFC-iTZiTkY",
+  authDomain: "blocitoff-69708.firebaseapp.com",
+  databaseURL: "https://blocitoff-69708.firebaseio.com",
+  storageBucket: "blocitoff-69708.appspot.com",
+  messagingSenderId: "321005892281"
+};
+firebase.initializeApp(config);
+
+
+const db = firebase.database();
+const dbRef = db.ref().child('tasks');
+
+var tasks = [];
+
 
 
 var taskId = 3;
@@ -17,32 +35,25 @@ class App extends React.Component {
     this._getTaskDescription = this._getTaskDescription.bind(this);
 
     this.state = {
-      tasks:[{
-              "taskId": 0,
-              "taskTitle": "A new Task!",
-              "taskDescription": "This is a task. It needs to be comleted soon",
-              "timeElapsed" : 0,
-              "completed": false
-            },
-            {
-              "taskId": 1,
-              "taskTitle": "Another Task!",
-              "taskDescription": "This yet another task. It needs to be comleted soon",
-              "timeElapsed" : 0,
-              "completed": false
-            },
-            {
-              "taskId": 2,
-              "taskTitle": "Wash the car",
-              "taskDescription": "wash your damn car",
-              "timeElapsed" : 0,
-              "completed": false
-            }],
+      tasks:[],
       newTaskTitle: "",
       newTaskDescription: ""
     }
   }
 
+  componentWillMount() {
+    this._getAllTasks();
+  }
+
+  _getAllTasks() {
+    const currentState = Object.assign({}, this.state);
+    dbRef.on("child_added", (snapshot) => {
+      tasks.push(snapshot.val());
+      currentState.tasks.push(snapshot.val());
+      console.log(currentState);
+      this.setState(currentState);
+    });
+  }
 
 
   _getTaskTitle (event) {
@@ -87,7 +98,6 @@ class App extends React.Component {
       taskId++;
 
       this.setState(newState);
-      console.log(this.state.tasks)
     }
   }
   _deleteTask (targetId) {
