@@ -23,7 +23,7 @@ var tasks = [];
 
 
 
-var taskId = 3;
+var taskId = 4;
 
 class App extends React.Component {
 
@@ -88,16 +88,12 @@ class App extends React.Component {
   _addTask (event) {
 
     event.preventDefault();
-
-    const newState = Object.assign({}, this.state);
-
+    let newTask = {};
     if (this.state.newTaskTitle.length > 0 && this.state.newTaskDescription.length > 0) {
-      newState.tasks.push({"taskId": taskId, "taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false})
-      newState.newTaskDescription = "";
-      newState.newTaskTitle = "";
+      newTask = {"taskId": taskId, "taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false, "timeElapsed": 0}
+      this.setState({newTaskTitle: "", newTaskDescription: ""});
+      dbRef.push(newTask);
       taskId++;
-
-      this.setState(newState);
     }
   }
   _deleteTask (targetId) {
