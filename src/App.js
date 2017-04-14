@@ -25,6 +25,8 @@ var tasks = [];
 
 var taskId = 4;
 
+
+
 class App extends React.Component {
 
   constructor() {
@@ -41,22 +43,28 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this._getAllTasks();
+  componentDidMount() {
+      const currentState = Object.assign({}, this.state);
+      dbRef.on("child_added", (snap) => {
+          currentState.tasks.push({
+              id: snap.key,
+              taskTitle: snap.val().taskTitle,
+              taskDescription: snap.val().taskDescription,
+              timeElapsed: snap.val().timeElapsed,
+              completed: snap.val().completed
+          });
+          this.setState(currentState);
+      });
+
+      dbRef.on("child_removed", (snap) => {
+          currentState.tasks = currentState.tasks.filter((task) => {
+              return (task.id != snap.key);
+          });
+       this.setState(currentState);
+       console.log(this.state);
+      });
   }
 
-  _getAllTasks() {
-    const currentState = Object.assign({}, this.state);
-    let currentTasks = {}
-    dbRef.on("value", (snapshot) => {
-      currentTasks = snapshot.val()
-      for (var i in currentTasks) {
-        currentState.tasks.push(currentTasks[i]);
-      }
-      console.log(currentState.tasks);
-      this.setState(currentState);
-    });
-  }
 
 
   _getTaskTitle (event) {
@@ -93,21 +101,15 @@ class App extends React.Component {
     event.preventDefault();
     let newTask = {};
     if (this.state.newTaskTitle.length > 0 && this.state.newTaskDescription.length > 0) {
-      newTask = {"taskId": taskId, "taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false, "timeElapsed": 0}
+      newTask = {"taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false, "timeElapsed": 0}
       this.setState({newTaskTitle: "", newTaskDescription: ""});
       dbRef.push(newTask);
-      taskId++;
     }
   }
   _deleteTask (targetId) {
 
-    const newState = Object.assign({}, this.state);
-    const modifiedTasks = newState.tasks.filter((task) => {
-      return(targetId != task.taskId);
-    })
-    newState.tasks = modifiedTasks;
-    this.setState(newState);
-    console.log(this.state);
+    dbRef.child(targetId).remove();
+
   }
 
   render() {
@@ -116,7 +118,7 @@ class App extends React.Component {
       return (
         <Task
           key={key}
-          id={task.taskId}
+          id={task.id}
           title={task.taskTitle}
           description={task.taskDescription}
           time={task.timeElapsed}
