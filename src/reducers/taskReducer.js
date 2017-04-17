@@ -1,6 +1,21 @@
 import * as firebase from "firebase"
 
-export const taskReducer = function(state=[], action) {
+const db = firebase.database();
+const dbRef = db.ref().child('tasks');
+
+const tasks = [];
+
+dbRef.on("child_added", (snapshot) => {
+    tasks.push({
+        id: snapshot.key,
+        taskTitle: snapshot.val().taskTitle,
+        taskDescription: snapshot.val().taskDescription,
+        completed: snapshot.val().completed,
+        createdAt: snapshot.val().createdAt
+    });
+});
+
+export const taskReducer = function(state=tasks, action) {
     let newState;
     switch(action.type) {
         case "ADD_TASK":

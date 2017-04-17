@@ -1,10 +1,12 @@
 import React from 'react';
+import {connect} from "react-redux";
 import './stylesheets/App.css';
 import * as firebase from 'firebase';
 import Task from './components/Task';
 import TimerMixin from 'react-timer-mixin';
 global.jQuery = require('jquery');
 import $ from 'jquery';
+
 
 var config = {
   apiKey: "AIzaSyBckf_p4eLyfj-NrtGUB_51dFC-iTZiTkY",
@@ -19,11 +21,6 @@ firebase.initializeApp(config);
 const db = firebase.database();
 const dbRef = db.ref().child('tasks');
 
-var tasks = [];
-
-
-
-var taskId = 4;
 
 
 
@@ -120,7 +117,7 @@ class App extends React.Component {
 
   render() {
 
-    let tasks = this.state.tasks.map((task, key) => {
+    let tasks = this.props.tasks.map((task, key) => {
       return (
         <Task
           key={key}
@@ -158,4 +155,25 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) =>  {
+    return {
+        tasks: state.taskReducer
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTask: (title, description) => {
+            dispatch({
+                type: "ADD_TASK",
+                payload: {
+                    title: title,
+                    description: description
+                }
+            });
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
