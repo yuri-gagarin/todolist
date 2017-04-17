@@ -53,16 +53,21 @@ class App extends React.Component {
               timeElapsed: snap.val().timeElapsed,
               completed: snap.val().completed
           });
-          this.setState(currentState);
+          console.log(this.state)
+          this.setState({tasks: currentState.tasks, newTaskTitle: "", newTaskDescription: ""});
+
+
       });
+
+
 
       dbRef.on("child_removed", (snap) => {
           currentState.tasks = currentState.tasks.filter((task) => {
               return (task.id != snap.key);
           });
        this.setState(currentState);
-       console.log(this.state);
       });
+
   }
 
 
@@ -102,9 +107,10 @@ class App extends React.Component {
     let newTask = {};
     if (this.state.newTaskTitle.length > 0 && this.state.newTaskDescription.length > 0) {
       newTask = {"taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false, "timeElapsed": 0}
-      this.setState({newTaskTitle: "", newTaskDescription: ""});
-      dbRef.push(newTask);
     }
+
+    dbRef.push(newTask);
+
   }
   _deleteTask (targetId) {
 
