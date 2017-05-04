@@ -1,4 +1,8 @@
-import { createStore } from "redux"
-import { taskReducer } from "../reducers/taskReducer"
+import { createStore, applyMiddleware } from "redux";
+import { taskReducer } from "../reducers/taskReducer";
+import { createLogger } from "redux-logger";
+import thunk from "redux-thunk";
 
-export const store = createStore(taskReducer, [{taskTitle: "a task", taskDescription: "Simple task", completed: false, createdAt: Date.now() }]);
+const logger = createLogger();
+
+export const store = createStore(taskReducer, applyMiddleware(thunk, logger));

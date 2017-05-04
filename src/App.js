@@ -1,27 +1,9 @@
 import React from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import './stylesheets/App.css';
-import * as firebase from 'firebase';
 import Task from './components/Task';
-import TimerMixin from 'react-timer-mixin';
 global.jQuery = require('jquery');
-import $ from 'jquery';
-
-
-var config = {
-  apiKey: "AIzaSyBckf_p4eLyfj-NrtGUB_51dFC-iTZiTkY",
-  authDomain: "blocitoff-69708.firebaseapp.com",
-  databaseURL: "https://blocitoff-69708.firebaseio.com",
-  storageBucket: "blocitoff-69708.appspot.com",
-  messagingSenderId: "321005892281"
-};
-firebase.initializeApp(config);
-
-
-const db = firebase.database();
-const dbRef = db.ref().child('tasks');
-
-
+import { fetchTasks, pushTask, destroyTask } from './actions/actions'
 
 
 class App extends React.Component {
@@ -29,43 +11,32 @@ class App extends React.Component {
   constructor() {
     super();
 
-    this._addTask = this._addTask.bind(this);
+    this._addTaskToFirebase = this._addTaskToFirebase.bind(this);
     this._getTaskTitle = this._getTaskTitle.bind(this);
     this._getTaskDescription = this._getTaskDescription.bind(this);
 
     this.state = {
-      tasks:[],
       newTaskTitle: "",
       newTaskDescription: ""
     }
   }
 
+  componentWillMount() {
+
+  }
   componentDidMount() {
-      const currentState = Object.assign({}, this.state);
-      dbRef.on("child_added", (snap) => {
-          currentState.tasks.push({
-              id: snap.key,
-              taskTitle: snap.val().taskTitle,
-              taskDescription: snap.val().taskDescription,
-              timeElapsed: snap.val().timeElapsed,
-              completed: snap.val().completed
-          });
-          console.log(this.state)
-          this.setState({tasks: currentState.tasks, newTaskTitle: "", newTaskDescription: ""});
+    this.props.loadTasks();
 
-
-      });
-
-
-
+      /*
       dbRef.on("child_removed", (snap) => {
           currentState.tasks = currentState.tasks.filter((task) => {
               return (task.id != snap.key);
           });
        this.setState(currentState);
       });
-
+    */
   }
+
 
 
 
@@ -98,21 +69,18 @@ class App extends React.Component {
     this.setState(currentState);
   }
 
-  _addTask (event) {
+  _addTaskToFirebase (event) {
 
     event.preventDefault();
     let newTask = {};
     if (this.state.newTaskTitle.length > 0 && this.state.newTaskDescription.length > 0) {
       newTask = {"taskTitle": this.state.newTaskTitle, "taskDescription": this.state.newTaskDescription, "completed": false, "timeElapsed": 0}
     }
-
-    dbRef.push(newTask);
+    this.props.addTask(newTask);
 
   }
   _deleteTask (targetId) {
-
-    dbRef.child(targetId).remove();
-
+    this.props.removeTask(targetId);
   }
 
   render() {
@@ -145,7 +113,7 @@ class App extends React.Component {
                 <label htmlFor="task">Please enter a task</label>
                 <textarea className="form-control task-input" rows="3" placeholder="I will complete..." onChange={this._getTaskDescription}></textarea>
               </div>
-                <button className="btn btn-success task-button" onClick={this._addTask}>Go!</button>
+                <button className="btn btn-success task-button" onClick={this._addTaskToFirebase}>Go!</button>
             </form>
           </div>
         </div>
@@ -157,23 +125,24 @@ class App extends React.Component {
 
 const mapStateToProps = (state) =>  {
     return {
-        tasks: state.taskReducer
+        tasks: state
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addTask: (title, description) => {
-            dispatch({
-                type: "ADD_TASK",
-                payload: {
-                    title: title,
-                    description: description
-                }
-            });
+        addTask: (task) => {
+          return dispatch(pushTask(task));
+        },
+        removeTask: (task) => {
+          return dispatch(destroyTask(task));
+        },
+        loadTasks: () => {
+          return dispatch(fetchTasks());
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
 
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
