@@ -1,7 +1,7 @@
 
-const tasks = [{taskTitle: "task", taskDescription: "Description" }];
+//const tasks = [{taskTitle: "task", taskDescription: "Description" }];
 
-export const taskReducer = function(state=tasks, action) {
+export const taskReducer = function(state=[], action) {
     switch(action.type) {
 
         case "DISPLAY_TASKS":
@@ -9,12 +9,13 @@ export const taskReducer = function(state=tasks, action) {
         break;
 
         case "ADD_TASK":
-            return [{
+            return [
+              {
                 completed: false,
                 taskTitle: action.payload.title,
                 taskDescription: action.payload.description,
                 timeElapsed: Date.now()
-            },
+              },
             ...state];
         break;
 
