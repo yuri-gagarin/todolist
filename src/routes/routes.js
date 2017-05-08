@@ -10,8 +10,8 @@ export const AppRoutes = () => {
     <Router>
       <div>
         <Route exact path="/" component={ LoginComponent } />
-        <Route path="/app" component= { App } />
-        <Route path ="/signup" component = { SignupComponent } />
+        <Route path="/app" component={ App } />
+        <Route path ="/signup" component={ SignupComponent } />
       </div>
     </Router>
   );

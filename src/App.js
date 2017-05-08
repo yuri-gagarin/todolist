@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import './stylesheets/App.css';
 import Task from './components/Task';
+import NavBar from './components/NavBar';
 global.jQuery = require('jquery');
 import { fetchTasks, pushTask, destroyTask } from './actions/actions'
 
@@ -102,6 +103,8 @@ class App extends React.Component {
 
     return (
       <div>
+      <NavBar />
+      <div>
         <div className="panel panel-success task-editor">
           <div className="panel-body">
             <form>
@@ -118,6 +121,7 @@ class App extends React.Component {
           </div>
         </div>
         {tasks}
+      </div>
       </div>
     );
   }
