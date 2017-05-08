@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import './stylesheets/App.css';
 import Task from './components/Task';
+import LoadingComponent from './components/LoadingComponent';
 import NavBar from './components/NavBar';
 global.jQuery = require('jquery');
 import { fetchTasks, pushTask, destroyTask } from './actions/actions'
@@ -23,19 +24,15 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-
-  }
-  componentDidMount() {
     this.props.loadTasks();
 
-      /*
-      dbRef.on("child_removed", (snap) => {
-          currentState.tasks = currentState.tasks.filter((task) => {
-              return (task.id != snap.key);
-          });
-       this.setState(currentState);
-      });
-    */
+    console.log(this.props.tasks);
+
+  }
+
+
+  componentDidMount() {
+
   }
 
 
@@ -101,29 +98,40 @@ class App extends React.Component {
       );
     });
 
-    return (
-      <div>
-      <NavBar />
-      <div>
-        <div className="panel panel-success task-editor">
-          <div className="panel-body">
-            <form>
-              <div className="form-group">
-                <label htmlFor="title">Task title</label>
-                <input type="text" className="form-control" maxLength="75" placeholder="Title..." onChange={this._getTaskTitle}></input>
-              </div>
-              <div className="form-group">
-                <label htmlFor="task">Please enter a task</label>
-                <textarea className="form-control task-input" rows="3" placeholder="I will complete..." onChange={this._getTaskDescription}></textarea>
-              </div>
-                <button className="btn btn-success task-button" onClick={this._addTaskToFirebase}>Go!</button>
-            </form>
+    let loading = false;
+
+    if (!loading) {
+      return (
+        <div>
+        <NavBar />
+        <div>
+          <div className="panel panel-success task-editor">
+            <div className="panel-body">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="title">Task title</label>
+                  <input type="text" className="form-control" maxLength="75" placeholder="Title..." onChange={this._getTaskTitle}></input>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="task">Please enter a task</label>
+                  <textarea className="form-control task-input" rows="3" placeholder="I will complete..." onChange={this._getTaskDescription}></textarea>
+                </div>
+                  <button className="btn btn-success task-button" onClick={this._addTaskToFirebase}>Go!</button>
+              </form>
+            </div>
           </div>
         </div>
         {tasks}
-      </div>
-      </div>
-    );
+        </div>
+      );
+    }
+    else {
+      return (
+        <div>
+          <LoadingComponent />
+        </div>
+      );
+    }
   }
 }
 

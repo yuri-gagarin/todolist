@@ -15,6 +15,7 @@ export function fetchTasks() {
           completed: snap.val().completed
       });
       dispatch(displayTasks(tasks));
+      //dispatch(completeRequest());
     })
   }
 }
@@ -68,5 +69,11 @@ function removeTask(taskId) {
   return {
     type: "REMOVE_TASK",
     payload: taskId
+  }
+}
+
+function completeRequest() {
+  return {
+    type: "COMPLETE_REQUEST"
   }
 }

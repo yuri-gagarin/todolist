@@ -1,11 +1,20 @@
 
-//const tasks = [{taskTitle: "task", taskDescription: "Description" }];
+const tasks = [{taskTitle: "task", taskDescription: "Description" }];
 
 export const taskReducer = function(state=[], action) {
     switch(action.type) {
 
         case "DISPLAY_TASKS":
+            console.log(action.payload);
             return [...action.payload];
+        break;
+
+        case "REQUEST_TASKS":
+          return state;
+        break;
+
+        case "COMPLETE_REQUEST":
+          return [...state.taskArray];
         break;
 
         case "ADD_TASK":

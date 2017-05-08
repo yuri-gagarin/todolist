@@ -37,8 +37,8 @@ export default class SignupComponent extends React.Component {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      console.log({error: errorCode, message: errorMessage});
-    })
+      console.log(errorMessage);
+    });
   }
 
   render () {
